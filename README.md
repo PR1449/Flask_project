@@ -4,4 +4,4 @@
 ###### Можно указывать тип питания, калорийность, количество ингредиентов.
 ###### Используются:
  * API Edamam
- * API Google Translation
+ * библиотека deep-translator(GoogleTranslator)
