@@ -9,17 +9,36 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField, StringField, BooleanField
 from wtforms.validators import DataRequired
+from deep_translator import GoogleTranslator
 
 from data.users_resources import UsersResourse, UsersListResource
 from flask_restful import Api
+import requests
+import json2html
+import json
 
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+APP_ID = "a2ea1e71"
+APP_KEY = "ff4176a57ef2625c2405874cf1bb00cb"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+def translation(to_translate):
+    translated = GoogleTranslator(source='auto').translate(to_translate)
+    return translated
+
+# def get_recipes(q):
+#     url = f"https://api.edamam.com/api/recipes/v2?type=public&q={q}&app_id={APP_ID}&app_key={APP_KEY}"
+#     response = requests.request("GET", url).json()
+#     infoFromJson = response
+#     hws = json2html.convert(json=infoFromJson)
+#     print(hws)
+#     return render_template("response_1.html", form=hws)
 
 
 class LoginForm(FlaskForm):
@@ -39,11 +58,11 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     form = SearchForm()
     if form.validate_on_submit():
-        pass
+        q = translation(form).strip().lower()
     return render_template("main.html", form=form)
 
 
@@ -73,6 +92,10 @@ def bad_request(error):
 
 
 def main():
+    db_session.global_init("db/recipes_users.db")
+    # app.register_blueprint(recipes_api.blueprint)
+    # api.add_resource(somthing, '/api/somsing')
+
     app.run()
 
 
