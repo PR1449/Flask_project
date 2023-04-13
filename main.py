@@ -84,6 +84,13 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(flask.jsonify({'error': 'Not found'}), 404)
