@@ -14,7 +14,7 @@ from deep_translator import GoogleTranslator
 from data.users_resources import UsersResourse, UsersListResource
 from flask_restful import Api
 import requests
-import json2html
+from json2html import *
 import json
 
 
@@ -32,13 +32,12 @@ def translation(to_translate):
     translated = GoogleTranslator(source='auto').translate(to_translate)
     return translated
 
-# def get_recipes(q):
-#     url = f"https://api.edamam.com/api/recipes/v2?type=public&q={q}&app_id={APP_ID}&app_key={APP_KEY}"
-#     response = requests.request("GET", url).json()
-#     infoFromJson = response
-#     hws = json2html.convert(json=infoFromJson)
-#     print(hws)
-#     return render_template("response_1.html", form=hws)
+def get_recipes(q):
+    url = f"https://api.edamam.com/api/recipes/v2?type=public&q={q}&app_id={APP_ID}&app_key={APP_KEY}"
+    response = requests.request("GET", url).json()
+    infoFromJson = response
+    hws = json2html.convert(json=infoFromJson)
+    return hws
 
 
 class LoginForm(FlaskForm):
