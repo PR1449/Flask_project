@@ -1,4 +1,3 @@
-
 import flask
 from flask import Flask, render_template, redirect, make_response
 
@@ -32,6 +31,7 @@ def translation(to_translate):
     translated = GoogleTranslator(source='auto').translate(to_translate)
     return translated
 
+
 def get_recipes(q):
     url = f"https://api.edamam.com/api/recipes/v2?type=public&q={q}&app_id={APP_ID}&app_key={APP_KEY}"
     response = requests.request("GET", url).json()
@@ -60,9 +60,13 @@ def load_user(user_id):
 @app.route("/", methods=['GET', 'POST'])
 def index():
     form = SearchForm()
-    if form.validate_on_submit():
-        q = translation(form).strip().lower()
-    return render_template("main.html", form=form)
+    try:
+        q = translation(form.search().split()[-1][7:-2])
+        if q != '':
+            return get_recipes(q)
+        return render_template("main.html", form=form)
+    except:
+        return render_template("main.html", form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
