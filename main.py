@@ -1,20 +1,18 @@
 import flask
-from flask import Flask, render_template, redirect, make_response
 
 from flask import Flask, render_template, redirect, make_response
 from data import db_session
 from data.users import User
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, SubmitField, StringField, BooleanField
+from wtforms import EmailField, PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from deep_translator import GoogleTranslator
 
-from data.users_resources import UsersResourse, UsersListResource
 from flask_restful import Api
 import requests
 from json2html import *
-import json
+from get_recipes_value import start, end
 
 
 app = Flask(__name__)
@@ -35,9 +33,8 @@ def translation(to_translate):
 def get_recipes(q):
     url = f"https://api.edamam.com/api/recipes/v2?type=public&q={q}&app_id={APP_ID}&app_key={APP_KEY}"
     response = requests.request("GET", url).json()
-    infoFromJson = response
-    hws = json2html.convert(json=infoFromJson)
-    return hws
+    hws = json2html.convert(json=response)[610:]
+    return start + hws + end
 
 
 class LoginForm(FlaskForm):
@@ -103,9 +100,6 @@ def bad_request(error):
 
 def main():
     db_session.global_init("db/recipes_users.db")
-    # app.register_blueprint(recipes_api.blueprint)
-    # api.add_resource(somthing, '/api/somsing')
-
     app.run()
 
 
