@@ -12,14 +12,13 @@ from deep_translator import GoogleTranslator
 from flask_restful import Api
 import requests
 from json2html import *
-from get_recipes_value import start, end
+from get_recipes_value import start, end, APP_KEY, APP_ID
 
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-APP_ID = "a2ea1e71"
-APP_KEY = "ff4176a57ef2625c2405874cf1bb00cb"
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
