@@ -1,3 +1,5 @@
+APP_ID = "a2ea1e71"
+APP_KEY = "ff4176a57ef2625c2405874cf1bb00cb"
 start = ''' <!DOCTYPE html>
 <html lang="en">
 <head>
