@@ -17,7 +17,7 @@ class UsersResourse(Resource):
         abort_if_news_not_found(user_id)
         session = db_session.create_session()
         user = session.query(User).get(user_id)
-        only = ['id', 'surname', 'name', 'email', 'hashed_password']
+        only = ['id', 'surname', 'name', 'email']
         return jsonify({'user': user.to_dict(only=only)})
 
     def delete(self, user_id):
@@ -34,7 +34,7 @@ class UsersListResource(Resource):
     def get(self):
         session = db_session.create_session()
         users = session.query(User).all()
-        only = ['id', 'surname', 'name', 'email', 'hashed_password']
+        only = ['id', 'surname', 'name', 'email']
         return jsonify({'users': [user.to_dict(only=only) for user in users]})
 
     def post(self):
@@ -46,7 +46,6 @@ class UsersListResource(Resource):
         user.surname = args['surname']
         user.name = args['name']
         user.email = args['email']
-        user.hashed_password = args['hashed_password']
         session.add(user)
         session.commit()
         return jsonify({'success': 'OK'})

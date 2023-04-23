@@ -6,6 +6,3 @@ parser.add_argument('id', required=True)
 parser.add_argument('surname', required=True)
 parser.add_argument('name', required=True)
 parser.add_argument('email', required=True)
-parser.add_argument('hashed_password', required=True)
-
-
